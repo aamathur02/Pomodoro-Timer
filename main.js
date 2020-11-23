@@ -1,28 +1,68 @@
-    var futureDate = new Date();
-    futureDate.setMinutes(futureDate.getMinutes() + 25);
-    countDownDate = futureDate.getTime();
+const timer = document.getElementById("timer");
+const startButton = document.getElementById("start_button");
+const pauseButton = document.getElementById("pause_button");
+const stopButton = document.getElementById("stop_button");
 
-    function runTimer() {
-    // Update the count down every 1 second
-        var x = setInterval(function() {
+startButton.addEventListener('click', () => {
+    toggleClock();
+});
 
-            // Get today's date and time
-            var now = new Date().getTime();
+pauseButton.addEventListener('click', () => {
+    toggleClock();
+});
 
-            // Find the distance between now and the count down date
-            var distance = countDownDate - now;
+stopButton.addEventListener('click', () => {
+    toggleClock(true);
+});
 
-            // Time calculations for days, hours, minutes and seconds
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+let clockRunning = false;
+let sessionTime = 1500;
+let timeLeft = 1500;
+let breakTime = 300;
 
-            // Display the result in the element with id="demo"
-            document.getElementById("display_timer_time").innerHTML = minutes + ":"+ seconds;
+const toggleClock = reset => {
+    if (reset) {
+        stopClock();
+    } else {
+        if (clockRunning == true) {
+            clearInterval(clockTimer);
+            clockRunning = false;
+        } else  {
+            clockRunning = true;
+        }
+    }
+}
 
-            // If the count down is finished, write some text 
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("display_timer_time").innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    }   
+clockTimer = setInterval(() => {
+    timeLeft--;
+    displaySessionTimeLeft();
+}, 1000);
+
+displaySessionTimeLeft = () => {
+    const secondsLeft = timeLeft;
+    let result = '';
+    const seconds = secondsLeft % 60;
+    const minutes = parseInt(secondsLeft / 60) % 60;
+    let hours = parseInt(secondsLeft / 3600);
+
+    function addLeadingZeroes(time) {
+        return time < 10 ? `0${time}` : time
+    }
+
+    if (hours > 0) {
+        result += `${time}:`;
+    }
+
+    result += `${addLeadingZeroes(minutes)}:${addLeadingZeroes(seconds)}`;
+    timer.innerText = result.toString()
+}
+
+const stopClock = () => {
+    clearInterval(clockTimer);
+    clockRunning = false;
+    timeLeft = sessionTime;
+
+    displaySessionTimeLeft();
+}
+
+let type = 'Work';
