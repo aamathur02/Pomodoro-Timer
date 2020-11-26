@@ -24,7 +24,7 @@ const toggleClock = reset => {
     if (reset) {
         stopClock();
     } else {
-        if (clockRunning == true) {
+        if (clockRunning === true) {
             clearInterval(clockTimer);
             clockRunning = false;
         } else  {
@@ -58,12 +58,13 @@ displaySessionTimeLeft = () => {
 }
 
 const stopClock = () => {
-    displaySessionLog(type);
+    displaySessionLog(clockType);
     clearInterval(clockTimer);
     clockRunning = false;
     timeLeft = sessionTime;
-    timeSpentInCurrSession = 0;
     displaySessionTimeLeft();
+    timeSpentInCurrSession = 0;
+    clockType = clockType === 'Work' ? "Break" : 'Work';
 }
 
 let clockType = 'Work';
@@ -78,9 +79,17 @@ const stepDown = () => {
             timeLeft = breakTime;
             displaySessionLog('Work');
             clockType = 'Break';
+
+            currentTask.value = 'Break';
+            currentTask.disabled = true;
         } else {
             timeLeft = sessionTime;
             clockType = 'Work';
+
+            if (currentTask.value === 'Break') {
+                currentTask.value = workSessionLabel;
+            }
+            currentTask.disabled = true;
             displaySessionLog('Break')
         }
     }
@@ -92,7 +101,12 @@ let timeSpentInCurrSession = 0;
 const displaySessionLog = type => {
     const sessionsList = document.getElementById("sessions");
     const newLi = document.createElement("li");
-    let sessionLabel = type;
+    if (clockType === 'Work') {
+        sessionLabel = currentTask.value ? currentTask.value : 'Work'
+        workSessionLabel = sessionLabel;
+    } else {
+        sessionLabel = 'Break';
+    }
     let elapsedTime = parseInt(timeSpentInCurrSession / 60);
     elapsedTime = elapsedTime > 0 ? elapsedTime : '< 1';
 
@@ -100,3 +114,5 @@ const displaySessionLog = type => {
     newLi.appendChild(text);
     sessionsList.appendChild(newLi);
 }
+
+let currentTask = document.getElementById("clock-task")

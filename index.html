@@ -11,15 +11,34 @@
     <div id="container">
         <div id="clock">
             <div id="timer"></div>
+            <div>
+                <input type="text" placeholder="Enter your task..." id="clock-task">
+            </div>
             <div id="clock_buttons">
-                <button id="start_button" ></button>
-                <button id="pause_button" ></button>
-                <button id="stop_button" ></button>
+                <button id="start_button" >Starrt</button>
+                <button id="pause_button" >Pause</button>
+                <button id="stop_button" >Stop</button>
+            </div>
+
+            <div id="title">
+                <span>Chanegs made here will reflect at the start of the next work/break session</span>
             </div>
         </div>
 
+       <div id="clock-actions">
+           <div class="input">
+               <label>Work Duration</label>
+               <input name="input-work-duration" id="input-work-duration" type="number"/>
+            </div>
+
+            <div class="input">
+                <label>Breal Duration</label>
+                <input name="input-break-duration" id="input-break-duration" type="number"/>
+             </div>
+       </div>
+
        <div id="session_info">
-           <h3></h3>
+           <h3>Your Sessions</h3>
            <ul id="sessions"></ul>
        </div>
     </div>
