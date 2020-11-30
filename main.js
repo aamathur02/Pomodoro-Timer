@@ -116,3 +116,24 @@ const displaySessionLog = type => {
 }
 
 let currentTask = document.getElementById("clock-task")
+let updatedWorkSessionDuration;
+let updatedBreakSessionDuration;
+
+let workDurationInput = document.getElementById("input-work-duration");
+let breakDurationInput = document.getElementById("input-break-duration");
+
+workDurationInput.value = '25';
+breakDurationInput.value = '5';
+
+workDurationInput.addEventListener('input', () => {
+    updatedWorkSessionDuration = minuteToSeconds(workDurationInput.value);
+});
+
+breakDurationInput.addEventListener('input', () => {
+    updatedBreakSessionDuration = minuteToSeconds(breakDurationInput.value);
+});
+
+const minuteToSeconds = mins => {
+    return mins * 60;
+}
+
